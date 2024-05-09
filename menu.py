@@ -184,7 +184,7 @@ def plot_prediction(model: YOLO, results: list, input: str, classes: list[str], 
             # Este o clasa ce TREBUIE sa o identificam!
             if class_name in classes:
                 if class_name not in class_counter:
-                    class_counter[class_name] = 0
+                    class_counter[class_name] = 1
                 else:
                     class_counter[class_name] += 1
                 class_with_index = classes_with_indexs[class_name]
