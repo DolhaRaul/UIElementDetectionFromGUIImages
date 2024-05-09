@@ -13,8 +13,8 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from PIL import Image
 
-print(torch.cuda.is_available())
-print(torch.cuda.device_count())
+# print(torch.cuda.is_available())
+# print(torch.cuda.device_count())
 
 
 if __name__ == '__main__':
