@@ -32,7 +32,7 @@ def show_menu():
     batch_size = 16 if epochs.__eq__("") else int(batch_size)
     image_size = 640 if image_size.__eq__("") else int(image_size)
     device = torch.device('cpu')
-    model.train(data=date, epochs=epochs, batch=4, imgsz=image_size, project='results', device=0, workers=0)
+    model.train(data=date, epochs=epochs, batch=16, imgsz=image_size, project='results', device='cpu', workers=8)
 
 """
 Meniul pentru model cand e in faza de antrenament

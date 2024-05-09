@@ -5,13 +5,13 @@ data: config.yaml
 epochs: 30
 time: null
 patience: 100
-batch: 4
+batch: 16
 imgsz: 640
 save: true
 save_period: -1
 cache: false
-device: 0
-workers: 0
+device: cpu
+workers: 8
 project: results
 name: train
 exist_ok: false
