@@ -1,0 +1,32 @@
+
+path: C:\Users\rauld\OneDrive\Desktop\Cursuri_An3\Semestrul_2\AI\ProiectAI\data  # dataset root dir
+train: images  # train images (relative to 'path')
+val: images  # val images (relative to 'path')
+
+#classes = ['Icon', 'TextLabel', 'MenuItem', 'Row', 'Button', 'SubmenuItem',
+#               'NavigationItem', 'DropdownItem', 'InputField', 'SectionTitle',
+#               'TitleBar', 'Menu', 'WorkingArea', 'VerticalMenu', 'NavigationMenu',
+#               'TableHeader']
+
+# Classes
+
+# Modified for your specific use case
+
+
+names:
+    0: Icon
+    1: TextLabel
+    2: MenuItem
+    3: Row
+    4: Button
+    5: SubmenuItem
+    6: NavigationItem
+    7: DropdownItem
+    8: InputField
+    9: SectionTitle
+    10: TitleBar
+    11: Menu
+    12: WorkingArea
+    13: VerticalMenu
+    14: NavigationMenu
+    15: TableHeader
