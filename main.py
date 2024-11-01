@@ -19,8 +19,8 @@ from PIL import Image
 
 if __name__ == '__main__':
     torch.cuda.empty_cache()
-    #Verificare pentru CATE MEMORIE am alocat pe GPU!
-    torch.cuda.set_device(0)
+    # Check for HOW MUCH MEMORY I have allocated on the GPU!
+    # torch.cuda.set_device(0)
     # if torch.cuda.is_available():
     #     # Get the memory allocated on the default GPU
     #     print(f"GPU name: {torch.cuda.get_device_name(0)}")
@@ -31,9 +31,9 @@ if __name__ == '__main__':
     #     print(f"Total memory: {total_memory / 1024 ** 2} MB")
     #     print(f"Occupied memory: {allocated_memory / 1024 ** 2} MB")
     #     print(f"Max memory capacity: {max_memory / 1024 ** 2} MB")
-    creare_input = input("Daca nu este deja folderul labels corect creat cu bounding box uri"
-                         " pentru fiecare imagine specifica, creati acum (DA | NU):  ")
-    if creare_input.__eq__('DA'):
+    creare_input = input("If the correct labels folder is not already created with bounding boxes"
+                         " for each specific image, create now (YES | NO): ")
+    if creare_input.__eq__('YES'):
         extract_data()
 
     show_menu()

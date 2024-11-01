@@ -9,9 +9,9 @@ classes = ['Icon', 'TextLabel', 'MenuItem', 'Row', 'Button', 'SubmenuItem',
                'TableHeader']
 
 """
-@:param img_name - numele fisierului imagine din data/images
-@:return Latimea si inaltimea sa
-Tinem cont ca toate imaginile au extensia .png, pe care o adaugam!
+@:param img_name - the name of the image file from data/images
+@:return Its width and height
+We take into account that all images have the extension .png, which we add!
 """
 def determine_image_dimension(img_name: str) -> [int ,int]:
     img_name += ".png"
@@ -22,19 +22,19 @@ def determine_image_dimension(img_name: str) -> [int ,int]:
 
 
 """
-@:param xmin - Abscisa punct stanga sus
-@:param ymin - Ordonata punct stanga sus
-@:param xmax - Abscisa punct dreapta jos
-@:param ymax - Ordonata punct dreapta jos
-Pentru diversele informatii legate de DEJA determinatele border box uri pentru
-diferitele imagini, avand coordonatele stanfa sus - dreapta jos pentru fiecare,
-VREM sa le transformam in format acceptat de YOLO pentru antrenament, adica
-in format (clasa_asociata_asociata(int), centru_x, centru_y, latime, lungime)
+@:param xmin - Upper left point abscissa
+@:param ymin - Top left point ordinate
+@:param xmax - Lower right point abscissa
+@:param ymax - Lower right point ordinate
+For the various information related to the ALREADY determined border boxes for
+the different images, having the top right - bottom right coordinates for each one,
+We WANT to convert them into a format accepted by YOLO for training, that is
+in format (associate_class(int), x_center, y_center, width, length)
 """
 
 def determine_YOLO_format(clasa: str, xmin: int, ymin: int,
                           xmax: int, ymax: int) -> [int, float, float, float, float]:
-    clasa_label = classes.index(clasa)  # Vedem index ul <=> label ul clasei
+    clasa_label = classes.index(clasa)  # We see the index <=> the label of the class
     centru_x = (xmax + xmin) / 2
     centru_y = (ymax + ymin) / 2
     latime = xmax - xmin
@@ -43,13 +43,13 @@ def determine_YOLO_format(clasa: str, xmin: int, ymin: int,
     return [clasa_label, centru_x, centru_y, latime, lungime]
 
 """
-@:param img_name - Numele imaginii
-@:param center_x - Abscisa centrului in pixeli
-@:param center_y - Ordonata centrului in pixeli
-@:param width - Latimea border box ului in pixeli
-@:param heigth - Inaltimea border box ului in pixeli
-@:return: APARENT, pentru ca datele sa nu fie corupte, YOLOv8 TREBUIE NEAPARAT SA LUCREZE CU DATEL NORMALIZATE!
-Adica coordonateke centrului bounding box, latime si inaltimea sa trebuie aduse la valori in [0, 1], si se face astfel:
+@:param img_name - Name of the image
+@:param center_x - The abscissa of the center in pixels
+@:param center_y - The ordinate of the center in pixels
+@:param width - The width of the border box in pixels
+@:param heigth - The height of the border box in pixels
+@:return: APPARENT, so that the data is not corrupted, YOLOv8 MUST WORK WITH NORMALIZED DATA!
+That is, the coordinates of the center of the bounding box, its width and height must be brought to values ​​in [0, 1], and it is done like this:
 normalized_x = center_x / image_width
 normalized_y = center_y / image_height
 normalized_width = width / image_width
@@ -68,16 +68,16 @@ def normalise_bounding_box_coordinates(img_name: str, center_x: int, center_y: i
 def extract_data():
     labels_path_folder = 'data/labels'
     labels_cache_path_file = 'data/labels.cache'
-    # Stergem folder ele / fisierele de mai sus SI cream altele noi!!!
+    # We delete the folders / files above AND create new ones!!!
     if os.path.exists(labels_path_folder):
         shutil.rmtree(labels_path_folder)
     if os.path.exists(labels_cache_path_file):
         os.remove(labels_cache_path_file)
 
-    #Cream iar labels folder
+    #Recreate the labels folder
     os.mkdir(labels_path_folder)
 
-    # Deschidem fisierul CSV
+    # We open the CSV file
     with open('annotations.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         data = list(reader)
@@ -85,7 +85,7 @@ def extract_data():
     data = data[1:]
 
     for row in data:
-        current_file = row[0]  # Vrem sa vedem din care imagine extragem bounding box
+        current_file = row[0]  # We want to see from which image we extract the bounding box
         if not os.path.exists(f'data/labels/{current_file}.txt'):  # Vedem daca avem imagine NOUA!
             with open(f'data/labels/{current_file}.txt', 'w'):
                 pass
@@ -103,11 +103,11 @@ def extract_data():
             f.write('\n')
 
 """
-In fisierul annotations.csv avem DOAR o line in plus(Table head ul); 
-RESTUL informatiilor extrase trebuie sa fie IN acelasi numar
+In the annotations.csv file we ONLY have one extra line (Table head); 
+The REST of the extracted information must be IN the same number
 """
 def verify_data_extracted():
-    # Deschidem fisierul CSV
+    # We open the CSV file
     with open('annotations.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         data = list(reader)

@@ -14,14 +14,14 @@ from utils.utils import save_results_desired_folder
 
 
 """
-Meniul principal
+The main Menu
 """
 
 
 def show_menu():
     mode = ""
     while not (mode.__eq__("train") or mode.__eq__("predict")):
-        mode = input("Introduceti optiunea modelului aici (train | predict): ")
+        mode = input("Introduce the model's option here (train | predict): ")
         if mode.__eq__("train"):
             model = train_mode()
         if mode.__eq__("predict"):
@@ -29,31 +29,31 @@ def show_menu():
 
 
 """
-Meniul pentru model cand e in faza de antrenament
+The menu for the model when it's in the training phase
 """
 
 
 def train_mode():
     """
-    De fiecare data vrem sa stergem SET UL precedent
-    de date si sa il pastram pe cel nou(folosim shutil fiindca foloder ul results)
-    MEREU are date in el, deci stergerea e recursiva!!!
+    Every time we want to delete the previous SET UL
+    of data and keep the new one ,we use shutil because the results folder
+    ALWAYS has data in it, so the deletion is recursive!!!
     """
     project = 'results'
     if os.path.exists(project):
         shutil.rmtree(project)
 
     transfer_learning = ""
-    while not (transfer_learning.__eq__("DA") or transfer_learning.__eq__("NU")):
-        transfer_learning = input("Folositi un model YOLO pre-trained sau nu (DA | NU)?: ")
+    while not (transfer_learning.__eq__("YES") or transfer_learning.__eq__("NO")):
+        transfer_learning = input("Do you use a pre-trained YOLO model or not (YES | NO)?: ")
 
     model = None
     pre_trained_type = ""
-    if transfer_learning.__eq__("DA"):
+    if transfer_learning.__eq__("YES"):
         pre_trained_type = ""
         while not (pre_trained_type.__eq__("nano") or pre_trained_type.__eq__("small")
                    or pre_trained_type.__eq__("medium")):
-            pre_trained_type = input("Introduceti tipul modelului ce se doreste a fi folosit (nano | small | medium): ")
+            pre_trained_type = input("Enter the type of model you want to use (nano | small | medium): ")
             if pre_trained_type.__eq__("nano"):
                 model = YOLO("yolov8n.pt")
             elif pre_trained_type.__eq__("small"):
@@ -63,40 +63,40 @@ def train_mode():
     elif transfer_learning.__eq__("NU"):
         model = YOLO("yolov8n.yaml")
 
-    date = input("Introduceti fisierul de configurare(de unde se preiau datele, default e config.yaml):")
-    epochs = input("Introduceti numarul de epoci aici, sau nimic pt valoarea default (100): ")
-    batch_size = input("Introduceti dimensiunea batch ului aici, sau nimic pentru valoarea default (16): ")
-    image_size = input("Introduceti un intreg n ce reprezinta predimensiunea la care imaginile vor fi redimensionate "
-                       " sub forma n*n, sau nimic pentru o redimensionare default (640*640): ")
+    date = input("Enter the configuration file (from where the data is taken, default is config.yaml):")
+    epochs = input("Enter the number of epochs here, or nothing for the default value (100): ")
+    batch_size = input("Enter the batch size here, or nothing for the default value (16): ")
+    image_size = input("Enter an integer representing the predimension to which the images will be resized "
+                       " in the form n*n, or nothing for a default resizing (640*640): ")
 
     date = 'config.yaml' if date.__eq__("") else date
     epochs = 100 if epochs.__eq__("") else int(epochs)
     batch_size = 16 if epochs.__eq__("") else int(batch_size)
     image_size = 640 if image_size.__eq__("") else int(image_size)
 
-    # VREM sa indicam in path rezultate SI daca am folosit un model pre antrenat SAU nu
+    # We WANT to indicate in the path results AND if we used a pre-trained model OR not
     if transfer_learning.__eq__("DA"):
         path_rezultate = f'results_{pre_trained_type}_{epochs}_{batch_size}_{image_size}'
     else:
         path_rezultate = f'results_newModel_{epochs}_{batch_size}_{image_size}'
     directory_results = 'ResultsAll'
 
-    # Verificam daca AVEM / NU AVEM deja o rulare cu ACESTE date si daca FACEM rularea!
+    # We check if we DO / DON'T already have a run with THESE data and if we DO the run!
     do_train = check_exist_run(path_rezultate=path_rezultate)
 
     if do_train.__eq__(True):
         model.train(data=date, epochs=epochs, batch=batch_size, imgsz=image_size,
                     project=path_rezultate, device='cpu', workers=8)
 
-        # Salvam rezultatele in folder ul ResultsAll
+        # We save the results in the ResultsAll folder
         save_results_desired_folder(directory_results=directory_results, path_rezultate=path_rezultate)
 
-        # Cele mai bune weights obtinute le salvam in trained_models_best_weights
+        # We save the best weights obtained in trained_models_best_weights
         save_best_weights_obtained(path_rezultate)
 
 
 """
-Meniul pentru model in faza de predict
+The menu for the model in the prediction phase
 """
 
 
@@ -106,12 +106,12 @@ def show_predict():
                'TitleBar', 'Menu', 'WorkingArea', 'VerticalMenu', 'NavigationMenu',
                'TableHeader']
     path_30epochs_trained_model = 'trained_models_best_weights/results_nano_30_16_640_best_weights.pt'
-    path_to_model = input("Introduceti modelul de folosit aici (default e results_nano_30_16_640_best_weights.pt ): ")
+    path_to_model = input("Enter the model to be used here (default is results_nano_30_16_640_best_weights.pt): ")
     path_to_model = path_30epochs_trained_model if path_to_model.__eq__("") else path_to_model
 
     model = YOLO(path_to_model)
 
-    path_to_image = input("Introduceti imaginea de analizat aici (default e data/images/Image1.png): ")
+    path_to_image = input("Enter the image to be analyzed here (default is data/images/Image1.png): ")
     path_to_image = "data/images/Image1.png" if path_to_image.__eq__("") else path_to_image
 
     results = model(path_to_image)
@@ -120,55 +120,55 @@ def show_predict():
     elements = []
     while classes_right_specified is not True:
         elements_to_predict = input(
-            "Introduceti elementele ce doresc a fi identificate, separate printr-un spatiu: " + classes.__repr__() +
-            "\n" + "Default sunt identificate toate clasele: ")
+            "Enter the elements you want to be identified, separated by a space: " + classes.__repr__() +
+            "\n" + "By default all classes are identified: ")
         elements = classes if elements_to_predict.__eq__("") else elements_to_predict.split()
 
         classes_right_specified = verify_classes(classes=classes, certain_classes=elements)
 
-    font_thickness = input("Alegeti grosimea label urilor ce se identifica, "
-                               "numar intreg (default e 1, grosime normala): ")
+    font_thickness = input("Choose the thickness of the labels that identify, "
+                               "integer number (default is 1, normal thickness):")
     font_thickness = 1 if font_thickness.__eq__("") else int(font_thickness)
     plot_prediction(model=model, results=results, input="data/images/Image1.png",
                     classes=elements, font_thickness=font_thickness)
 
 
 """
-@:param classes - Lista de clase (CELE 16) din care poate alege utilizatorul
-@:param certain_classes - Clasele alese de utilizator
-@:return True daca utilizatorul NU a produs typo-uri (A introdus toate clasele corect) sau False daca utilizatorul
-doreste sa caute clase ce NU sunt printre cele ce doresc a fi identificate
+@:param classes - List of classes (THE 16) from which the user can choose
+@:param certain_classes - The classes chosen by the user
+@:return True if the user did NOT produce typos (Entered all classes correctly) or False if the user
+wants to look for classes that are NOT among those that want to be identified
 """
 
 
 def verify_classes(classes: list[str], certain_classes: list[str]) -> bool:
     for chosen_class in certain_classes:
         if not classes.__contains__(chosen_class):
-            print(f'{chosen_class} nu este printre clasele posibile!')
+            print(f'{chosen_class} is not among the possible classes!')
             return False
     return True
 
 
 """
-@:param model - Modelul YOLO ce il folosim pentru predictie
-@:param results - Obiectul results ce l am obtinut in urma predictiei pe o anumita imagine
-@:param input - Imaginea ce am folosit o pentru predictie
-@:param classes - Clasele de dorim sa le identificam in imaginea repsectiva
-@:param font_thickness - Dimensiunea fontului
-@:return PE imaginea ce am folosit o drept predictie, DESENAM toate bounding box urile
-ce le-am obtinut, plus iconita + scor de incredere de asupra!
+@:param model - The YOLO model we use for prediction
+@:param results - The results object that we obtained after the prediction on a certain image
+@:param input - The image we used for prediction
+@:param classes - The classes we want to identify in the respective image
+@:param font_thickness - Font size
+@:return ON the image I used as a prediction, I DRAW all the bounding boxes
+what I got, plus the icon + confidence score!
 """
 
 
 def plot_prediction(model: YOLO, results: list, input: str, classes: list[str], font_thickness: int):
-    # Setari font implicite!
+    # Default font settings!
     font = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 0.7
 
-    # fiecarei clase ii asociem un index
+    # we associate an index to each class
     classes_with_indexs = construct_classes_dictionary()
 
-    # Reciproc, fiecarui index ii asociem o clasa!
+    # Reciprocally, we associate a class with each index!
     indexs_with_classes = {value: key for key, value in classes_with_indexs.items()}
 
     associated_colors = construct_colors_dictionary()
@@ -181,7 +181,7 @@ def plot_prediction(model: YOLO, results: list, input: str, classes: list[str], 
         boxes = result.boxes.cpu().numpy()
         for box in boxes:
             class_name = indexs_with_classes[box.cls[0]]
-            # Este o clasa ce TREBUIE sa o identificam!
+            # It is a class that we MUST identify!
             if class_name in classes:
                 if class_name not in class_counter:
                     class_counter[class_name] = 1
@@ -195,27 +195,28 @@ def plot_prediction(model: YOLO, results: list, input: str, classes: list[str], 
                 text_width, text_height = text_size
 
                 xyxy = box.xyxy
-                # Aparent e 2 dimensional(fiecare element E UN ARRAY cu un singur element, VREM sa elim o dim)
+                # Apparently it is 2 dimensional (each element IS AN ARRAY with a single element, WE WANT to remove a dime)
                 xyxy = xyxy.flatten()
                 cv2.rectangle(img_representation, (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3])),
                               color_for_class, 2)
-                text_x = int(xyxy[0] + (xyxy[2] - xyxy[0]) / 2 - text_width / 2)  # Centram orizontal
-                text_y = int(xyxy[1]) - 3  # Punem textl putin mai sus
+                text_x = int(xyxy[0] + (xyxy[2] - xyxy[0]) / 2 - text_width / 2)  # We center horizontally
+                text_y = int(xyxy[1]) - 3  # WE put textl a little above
 
                 cv2.putText(img_representation, label_with_score, (text_x, text_y), font, font_scale, color_for_class,
                             font_thickness)
 
-                print(f"{class_name} : {class_counter[class_name]} a fost gasita!")
+                print(f"{class_name} : {class_counter[class_name]} has been found!")
 
     cv2.imshow("Prediction", img_representation)
     cv2.waitKey(0)
 
-    #Extragem numele fisierului din input path
+    #Extract the file name from the input path
     input_filename = os.path.basename(input)
 
-    # NU PUTEM ADAUGA NUME DE CLASE IN FILENAME!!! Desi este foarte specific, daca VREM sa identificam MULTE CLASE(de)
-    # (exemplu toate) ATUNCI numeler fisierului ESTE PREA LUNG, si nu se poate crea pentru ca WINDOWS ARE LIMITA
-    # la AbsolutePath!!! Astfel, in loc de numele claselor vom pune INDECSII unici asociati! (se vede si in config.yaml)
+    # WE CANNOT ADD CLASS NAMES IN THE FILENAME!!! Although it is very specific, if we WANT to identify MANY CLASS(es)
+    # (example all) THEN the file name IS TOO LONG, and it cannot be created because WINDOWS HAS A LIMIT
+    # at AbsolutePath!!! Thus, instead of class names we will put unique associated INDEXES!
+    # (it can also be seen in config.yaml)
 
     classes_predicted_by_index = []
     for label in classes:
@@ -224,7 +225,7 @@ def plot_prediction(model: YOLO, results: list, input: str, classes: list[str], 
 
     classes_predicted = '_'.join(classes_predicted_by_index)
 
-    # Construim path de baza de unde salvam si imaginea si object counter(cele 2 fisiere)
+    # We build the base path where we save the image and object counter (the 2 files)
     path_prediction_saved = 'predictions/prediction_for_' + input_filename + '_for_' + classes_predicted
 
     path_prediction_image_saved = path_prediction_saved + ".jpg"
