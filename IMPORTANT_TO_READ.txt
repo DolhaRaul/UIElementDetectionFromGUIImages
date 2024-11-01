@@ -1,0 +1,1 @@
+Before running the program, to ensure the CORRECT FUNCTIONING of the program, make sure that the path in the config.yaml file is changed to the ABSOLUTE path (must be absolute) of the data directory (where images and labels are located) from within your unzipped project.
