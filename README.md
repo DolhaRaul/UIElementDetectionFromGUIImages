@@ -1,1 +1,1 @@
-# Check the english-version branch for the complete-explain version of the project
+# Check the english-version branch for the complete-explained version of the project
