@@ -6,10 +6,10 @@ of up to 16 different elements within GUI images, a crucial capability for appli
 
 # Table of Contents
 1. [Data Analysis](#data-analysis)
-2. [Development and assesment of the algorithm](#study)
-3. [Conclusions](#conclusion)
+2. [Development and Assessment of the Algorithm](#development-and-assessment-of-the-algorithm)
+3. [Conclusions](#conclusions)
 
- ## Data Analysis
+## Data Analysis
 
 The input data that the machine learning algorithm will take and process
 represents a set of 121 images, more precisely 121 screenshots of various 
@@ -55,4 +55,12 @@ element type (of each class) from table ˘ 2.1 as follows: icon − > 0, TextLab
 MenuItem − > 2, ... , NavigationMenu − > 14, TableHeader − > 15, on the rest of the other columns being present which represent numbers from the range ˘ [0, 1] which represent
 data normalized by the process described above, as can be observed in the figure previously attached.
 
+Part of the pre-trained algorithms used to compare the results uses the COCO dataset for training, which contains 330,000 images, among
+which 200,000 have annotations that allow object detection, segmentation and framing,
+including 80 categories of objects. ˆ
+In our problem, the pre-trained algorithms
+used, they used 90% of the images for training, and they were used for evaluation
+the remaining 10% of the images.
+
+## Development and Assessment of the Algorithm
 
