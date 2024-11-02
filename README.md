@@ -21,24 +21,24 @@ is framed in a rectangle, whose representation is given to the file from the pro
 They are in the table below
 show the 16 types of elements (classes) and the number of occurrences of each, all this totaling 15123 elements for the algorithm to identify. 
 
-| Element's type (class) | Number |
-|---------------------------|-------|
-| Icon                      | 5704  |
-| TextLabel                 | 4298  |
-| MenuItem                  | 1823  |
-| Row                       | 813   |
-| Button                    | 757   |
-| SubmenuItem               | 685   |
-| NavigationItem            | 424   |
-| DropdownItem              | 379   |
-| InputField                | 149   |
-| SectionTitle              | 145   |
-| TitleBar                  | 121   |
-| Menu                      | 2154  |
-| WorkingArea               | 121   |
-| VerticalMenu              | 110   |
-| NavigationMenu            | 100   |
-| TableHeader               | 58    |
+| Element's type (class)    | Number |
+|---------------------------|--------|
+| Icon                      | 5704   |
+| TextLabel                 | 4298   |
+| MenuItem                  | 1823   |
+| Row                       | 813    |
+| Button                    | 757    |
+| SubmenuItem               | 685    |
+| NavigationItem            | 424    |
+| DropdownItem              | 379    |
+| InputField                | 149    |
+| SectionTitle              | 145    |
+| TitleBar                  | 121    |
+| Menu                      | 2154   |
+| WorkingArea               | 121    |
+| VerticalMenu              | 110    |
+| NavigationMenu            | 100    |
+| TableHeader               | 58     |
 
 Below is information on where the dataset images for our model are stored and how the annotations for the classes within each image are organized.
 <p align="center">
@@ -133,18 +133,66 @@ some are not identified at all (section title, title bar), the metrics values be
   <img src="https://github.com/user-attachments/assets/a05e5377-1b82-4b06-87bf-e68614f09ea2" alt="Image1" width="40%"> 
   <img src="https://github.com/user-attachments/assets/60e48920-4515-4e86-b5ab-380ea80d015c" alt="Image2" width="40%">  
 </p>
+<div align="center">
+  <strong>Confusion matrix</strong> and <strong>metrics' values</strong> for <i>small30</i>
+</div>
+<br>
 
 To test the model and make predictions, the program includes a dedicated menu where users can select the **model** for prediction (in this case, the previously trained nano model with 30 epochs), an **image** to process (one not included in the training dataset), and the **specific classes to identify** in the image (with all classes selected by default). For a more challenging test, we chose the class with the highest number of occurrences, the Icon class (76 instances), resulting in 45 elements being identified. The output image is shown below.
 ![image](https://github.com/user-attachments/assets/f0167b66-8ddd-4159-9f4a-0c1a45f83337)
 <div align="center">
   <em>Predictions</em> for <strong>Icon class</strong> for image found in <em>/data/images/Imagine1</em>
 </div>
+<br>
 
 **2**. Next, we will present the results obtained by the small version (which requires a slightly longer running time - **approximately 2 hours**), but which provides more accurate results over the **same number of epochs**. The obtained confusion matrix
 is shown in figure below, which we can see are significantly better
 than in the nano30 version, having **4 classes** found correctly in a proportion of 100%
 (menu, vertical menu, navigation menu, working area), **most classes**
 having a score of over **0.9**, none of them being unidentified.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/3e1b4e14-2e14-4345-a423-6a2b584601af" alt="Image 1" width="45%">
+  <img src="https://github.com/user-attachments/assets/5ef41c37-45f3-4d4b-8e42-93427fad738a" alt="Image 2" width="45%">
+</div>
+<br>
+
+<div align="center">
+  <strong>Confusion matrix</strong> and <strong>metrics' values</strong> for <i>small30</i>
+</div>
+<br>
+
+Using this model, making a prediction for the *same image as in the previus case*, we obtain **63 Icons elements** identified (+18 compared to the previus prediction)
+
+**3**. We trained a non-pretrained model on our dataset for 30 epochs, and the results were significantly weaker compared to the pretrained model. The confusion matrix below shows much lower values, and the metric tables also reflect this decline in performance.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/61de2f4e-d56d-43a3-88f2-76ebed0bf0ed" alt="Imagine10_UIElemDetection" width="45%">
+  <img src="https://github.com/user-attachments/assets/06285766-367d-49d2-babd-461734a48b6c" alt="Imagine11_UIElemDetection" width="45%">
+</div>
+
+<div align="center">
+  <strong>Confusion matrix</strong> and <strong>metrics' values</strong> for <i>new model</i>
+</div>
+<br>
+
+Below a comparison between the **small model** and the **new model**, both trained on the same number of epochs is shown, in the context of identifying *Text Label elements* for image */data/images/Image1*
+![image](https://github.com/user-attachments/assets/a01a075f-7e5f-4d3c-9ebf-1a367646593f)
+<div align="center">
+  <strong>Predictions</strong> made by the <strong>new model / small model</strong> 
+</div>
+
+## Conclusions
+We introduce the following pertinent conclusions that
+constitutes a summary of the observations / results identified at the level of the subject
+addressed:
+1. **Performance of YOLOv8 Algorithms**: Pretrained YOLOv8 models demonstrated superior capabilities in the precise and fast detection of GUI elements compared to non-pretrained variants. The YOLOv8 "nano" and "small" versions were tested and provided a good balance between speed and accuracy, making them more suitable for use in scenarios with limited resources, aiming for low latency while maintaining high precision.
+
+2. **Impact of Pretraining**: The experimental results clearly show the advantage of pretraining in improving detection performance. Pretrained models not only reduced the training time but also significantly enhanced the algorithm's generalization capability.
+
+3. **Evaluation with Rigorous Metrics**: Using mAP50 and mAP95 as the main metrics for evaluating the algorithms' performance allowed for a detailed understanding of detection capabilities at different IoU thresholds. This highlighted not only the model's accuracy in absolute terms but also its effectiveness in detecting objects under varying overlap conditions.
+
+4. **Importance of Dataset Size**: The results also emphasized the importance of having a comprehensive and well-annotated dataset. Expanding the dataset with diverse and well-labeled images could significantly contribute to improving the models' performance.
 
 
 
